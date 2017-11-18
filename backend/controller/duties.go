@@ -47,6 +47,7 @@ func (d *Duties) HandleAdd(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (d *Duties) HandleConfirm(rw http.ResponseWriter, r *http.Request) {
+	user := r.Context().Value(middleware.ContextUserKey).(*model.User)
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -60,7 +61,7 @@ func (d *Duties) HandleConfirm(rw http.ResponseWriter, r *http.Request) {
 	assoc := d.Database.Model(duty).Association("Confirmations")
 
 	//TODO: security
-	if res := assoc.Append(&model.Confirmation{UserID: uint(id)}); res.Error != nil {
+	if res := assoc.Append(&model.Confirmation{UserID: user.ID}); res.Error != nil {
 		utils.NewErrorResponse(http.StatusInternalServerError, model.ErrProjectInternal).AppendDebug(res.Error).Write(rw)
 		return
 	}

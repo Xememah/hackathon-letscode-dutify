@@ -53,6 +53,9 @@ out:
 	}
 	a.Database, err = gorm.Open("postgres", con)
 	a.Database.SetLogger(a.Logger)
+	if os.Getenv("DEBUG") == "TRUE" {
+		a.Database = a.Database.Debug()
+	}
 	if err != nil {
 		return err
 	}
@@ -60,7 +63,7 @@ out:
 	a.Database.AutoMigrate(&model.User{}, &model.Project{}, &model.Duty{}, &model.Confirmation{})
 
 	a.Logger.Println("setting up routes")
-	a.router = mux.NewRouter()
+	a.router = mux.NewRouter().StrictSlash(true)
 
 	a.router.Methods("OPTIONS").HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		rw.WriteHeader(http.StatusOK)

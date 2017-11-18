@@ -168,7 +168,25 @@ func (p *Projects) HandleGetSingle(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	byt, err := json.Marshal(&project)
+	type Result struct {
+		ID     uint `json:"user" db:"id"`
+		Points int  `json:"points" db:"points"`
+	}
+	results := []Result{}
+	if res := p.Database.Table("confirmations").Select("confirmations.user_id as id, sum(reward) as points").Joins("INNER JOIN duties ON duties.id = confirmations.duty_id AND duties.project_id=?", vars["projectid"]).Group("confirmations.user_id").Find(&results); res.Error != nil {
+		utils.NewErrorResponse(http.StatusInternalServerError, model.ErrProjectInternal).AppendDebug(res.Error).Write(rw)
+		return
+	}
+
+	type Resp struct {
+		*model.Project
+		Ranking []Result `json:"ranking"`
+	}
+
+	byt, err := json.Marshal(&Resp{
+		Project: project,
+		Ranking: results,
+	})
 	if err != nil {
 		(&utils.ErrorResponse{
 			Errors:      []string{model.ErrProjectInternal.Error()},
