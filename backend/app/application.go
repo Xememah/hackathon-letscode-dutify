@@ -24,7 +24,7 @@ type Application struct {
 }
 
 func (a *Application) Init() error {
-	a.Logger.Println("starting LetsCode")
+	a.Logger.Println("starting Dutify")
 
 	a.Logger.Println("setting up database connection")
 	con, err := sql.Open("postgres", fmt.Sprintf("postgres://%s:%s@database/%s?sslmode=disable", os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DB")))
@@ -53,6 +53,9 @@ out:
 	}
 	a.Database, err = gorm.Open("postgres", con)
 	a.Database.SetLogger(a.Logger)
+	if os.Getenv("DEBUG") == "TRUE" {
+		a.Database = a.Database.Debug()
+	}
 	if err != nil {
 		return err
 	}
@@ -60,7 +63,7 @@ out:
 	a.Database.AutoMigrate(&model.User{}, &model.Project{}, &model.Duty{}, &model.Confirmation{})
 
 	a.Logger.Println("setting up routes")
-	a.router = mux.NewRouter()
+	a.router = mux.NewRouter().StrictSlash(true)
 
 	a.router.Methods("OPTIONS").HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		rw.WriteHeader(http.StatusOK)
@@ -68,6 +71,9 @@ out:
 
 	accountController := &controller.Accounts{Database: a.Database}
 	accountController.Register(a.router.PathPrefix("/accounts/").Subrouter())
+
+	projectsController := &controller.Projects{Database: a.Database}
+	projectsController.Register(a.router.PathPrefix("/projects/").Subrouter())
 
 	return nil
 }
