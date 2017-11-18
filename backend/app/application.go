@@ -24,7 +24,7 @@ type Application struct {
 }
 
 func (a *Application) Init() error {
-	a.Logger.Println("starting LetsCode")
+	a.Logger.Println("starting Dutify")
 
 	a.Logger.Println("setting up database connection")
 	con, err := sql.Open("postgres", fmt.Sprintf("postgres://%s:%s@database/%s?sslmode=disable", os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DB")))

@@ -106,9 +106,9 @@ func (p *Projects) HandleDelete(rw http.ResponseWriter, r *http.Request) {
 
 func (p *Projects) HandleGetAll(rw http.ResponseWriter, r *http.Request) {
 	user := r.Context().Value(middleware.ContextUserKey).(*model.User)
+
 	projects := []model.Project{}
-	res := p.Database
-	if res := res.Model(&user).Association("Projects").Find(&projects); res.Error != nil {
+	if res := p.Database.Model(&user).Association("Projects").Find(&projects); res.Error != nil {
 		(&utils.ErrorResponse{
 			Errors:      []string{model.ErrProjectInternal.Error()},
 			DebugErrors: []string{res.Error.Error()},
@@ -118,11 +118,7 @@ func (p *Projects) HandleGetAll(rw http.ResponseWriter, r *http.Request) {
 
 	byt, err := json.Marshal(&projects)
 	if err != nil {
-		(&utils.ErrorResponse{
-			Errors:      []string{model.ErrProjectInternal.Error()},
-			DebugErrors: []string{err.Error()},
-			Code:        http.StatusInternalServerError,
-		}).Write(rw)
+		utils.NewErrorResponse(http.StatusInternalServerError, model.ErrProjectInternal).AppendDebug(err).Write(rw)
 		return
 	}
 	rw.WriteHeader(http.StatusOK)
@@ -145,25 +141,19 @@ func (p *Projects) HandleGetSingle(rw http.ResponseWriter, r *http.Request) {
 
 	project := &model.Project{}
 	project.ID = uint(id)
-	res := p.Database
 
 	//TODO: security
-
-	if res := res.First(project, uint(id)); res.Error != nil {
-		(&utils.ErrorResponse{
-			Errors:      []string{model.ErrProjectInternal.Error()},
-			DebugErrors: []string{res.Error.Error()},
-			Code:        http.StatusInternalServerError,
-		}).Write(rw)
+	if err := project.Find(p.Database); err != nil {
+		utils.NewErrorResponse(http.StatusInternalServerError, err)
 		return
 	}
 
-	if res := res.Model(project).Related(&project.Duties); res.Error != nil {
+	if res := p.Database.Model(project).Related(&project.Duties); res.Error != nil {
 		utils.NewErrorResponse(http.StatusInternalServerError, model.ErrProjectInternal).AppendDebug(res.Error).Write(rw)
 		return
 	}
 
-	if res := res.Select("id, name").Model(project).Related(&project.Users, "Users"); res.Error != nil {
+	if res := p.Database.Select("id, name").Model(project).Related(&project.Users, "Users"); res.Error != nil {
 		utils.NewErrorResponse(http.StatusInternalServerError, model.ErrProjectInternal).AppendDebug(res.Error).Write(rw)
 		return
 	}
