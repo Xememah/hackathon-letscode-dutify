@@ -69,6 +69,9 @@ out:
 	accountController := &controller.Accounts{Database: a.Database}
 	accountController.Register(a.router.PathPrefix("/accounts/").Subrouter())
 
+	projectsController := &controller.Projects{Database: a.Database}
+	projectsController.Register(a.router.PathPrefix("/projects/").Subrouter())
+
 	return nil
 }
 

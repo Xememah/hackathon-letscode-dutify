@@ -1,7 +1,7 @@
 package model
 
 type Confirmation struct {
-	ID uint
-	Duty Duty
-	User User
+	ID     uint
+	DutyID uint
+	UserID uint
 }

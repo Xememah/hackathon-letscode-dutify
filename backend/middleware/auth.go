@@ -50,7 +50,7 @@ func RequiresAuth(h http.Handler) http.Handler {
 		tok, claims, err := ParseToken(req)
 
 		if err != nil || !tok.Valid {
-			utils.NewErrorResponse(ErrAuthInvalidToken, err).Write(http.StatusUnauthorized, rw)
+			utils.NewErrorResponse(http.StatusUnauthorized, ErrAuthInvalidToken, err).Write(rw)
 			return
 		}
 
@@ -58,7 +58,7 @@ func RequiresAuth(h http.Handler) http.Handler {
 			ctx := context.WithValue(req.Context(), ContextUserKey, claims.User)
 			h.ServeHTTP(rw, req.WithContext(ctx))
 		} else {
-			utils.NewErrorResponse(ErrAuthUnknown).Write(http.StatusInternalServerError, rw)
+			utils.NewErrorResponse(http.StatusInternalServerError, ErrAuthUnknown).Write(rw)
 		}
 	})
 }

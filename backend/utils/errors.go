@@ -10,26 +10,52 @@ import (
 type ErrorResponse struct {
 	Errors      []string `json:"errors"`
 	DebugErrors []string `json:"debug_errors,omitempty"`
+	Code        int      `json:"-"`
 }
 
-func NewErrorResponse(errors ...error) *ErrorResponse {
-	resp := &ErrorResponse{}
+func NewErrorResponse(code int, errors ...error) *ErrorResponse {
+	if len(errors) == 1 {
+		if err, ok := errors[0].(*ErrorResponse); ok {
+			return err
+		}
+	}
+
+	resp := &ErrorResponse{Code: code}
 	for _, err := range errors {
-		resp.Errors = append(resp.Errors, err.Error())
+		if erp, ok := err.(*ErrorResponse); ok {
+			resp.Errors = append(resp.Errors, erp.Errors...)
+			resp.DebugErrors = append(resp.DebugErrors, erp.Errors...)
+		} else {
+			resp.Errors = append(resp.Errors, err.Error())
+		}
 	}
 	return resp
 }
 
+func (re *ErrorResponse) Append(errors ...error) *ErrorResponse {
+	for _, err := range errors {
+		re.DebugErrors = append(re.Errors, err.Error())
+	}
+	return re
+}
+
+func (re *ErrorResponse) AppendDebug(errors ...error) *ErrorResponse {
+	for _, err := range errors {
+		re.DebugErrors = append(re.DebugErrors, err.Error())
+	}
+	return re
+}
+
 func (re *ErrorResponse) Error() string {
-	return strings.Join(re.Errors, ", ")
+	return strings.Join(re.DebugErrors, ", ")
 }
 
 func (re *ErrorResponse) String() string {
 	return re.Error()
 }
 
-func (re *ErrorResponse) Write(code int, rw http.ResponseWriter) {
-	rw.WriteHeader(code)
+func (re *ErrorResponse) Write(rw http.ResponseWriter) {
+	rw.WriteHeader(re.Code)
 	if os.Getenv("DEBUG") != "TRUE" {
 		re.DebugErrors = []string{}
 	}
