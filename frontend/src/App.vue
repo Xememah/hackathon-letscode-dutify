@@ -50,7 +50,7 @@
         </v-slide-y-transition>
       </v-container>
     </v-content>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       temporary
       :right="right"
       v-model="rightDrawer"
@@ -65,29 +65,68 @@
         </v-list-tile>
       </v-list>
 
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
+    </v-navigation-drawer> -->
+    <!-- <v-footer :fixed="fixed" app>
       <span>&copy; 2017</span>
-    </v-footer>
+    </v-footer> -->
+    <v-bottom-nav
+      absolute
+      shift
+      :value="true"
+      :active.sync="accent_color"
+      :color="computedColor"
+    >
+      <v-btn dark>
+        <span>Home</span>
+        <v-icon>home</v-icon>
+      </v-btn>
+      <v-btn dark>
+        <span>Score</span>
+        <v-icon>assessment</v-icon>
+      </v-btn>
+      <v-btn dark>
+        <span>Profile</span>
+        <v-icon>face</v-icon>
+      </v-btn>
+      <v-btn dark>
+        <span>Settings</span>
+        <v-icon>settings</v-icon>
+      </v-btn>
+    </v-bottom-nav>
   </v-app>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        clipped: false,
-        drawer: true,
-        fixed: false,
-        items: [{
-          icon: 'bubble_chart',
-          title: 'Inspire'
-        }],
-        miniVariant: false,
-        right: true,
-        rightDrawer: false,
-        title: 'Symborify'
+export default {
+  data() {
+    return {
+      clipped: false,
+      drawer: true,
+      fixed: false,
+      miniVariant: false,
+      right: true,
+      rightDrawer: false,
+      title: "Symborify",
+      accent_color: 0
+    }
+  },
+  computed: {
+    computedColor () {
+      switch (this.accent_color) {
+        case 0:
+          return 'blue-grey'
+        break
+        case 1:
+          return 'teal'
+        break
+        case 2:
+          return 'brown'
+        break
+        case 4:
+          return 'brown lighten-1'
+        break
       }
     }
   }
+}
 </script>
