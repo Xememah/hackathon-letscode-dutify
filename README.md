@@ -4,7 +4,7 @@ Coded in: **Barcelona**
 
 ## Team:
 
-- Weronika Symbor
-- Marek Kochanowski
-- Maciej Mionskowski
+- Weronika Symbor (Project Manager)
+- Marek Kochanowski (Front-end Developer & UI/UX Designer)
+- Maciej Mionskowski (Back-end Developer)
 
