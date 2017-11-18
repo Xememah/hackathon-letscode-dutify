@@ -51,25 +51,21 @@ out:
 			time.Sleep(1 * time.Second)
 		}
 	}
-	// auto-migrating model
 	a.Database, err = gorm.Open("postgres", con)
 	a.Database.SetLogger(a.Logger)
 	if err != nil {
 		return err
 	}
 
-	a.Database.AutoMigrate(&model.User{})
+	a.Database.AutoMigrate(&model.User{}, &model.Project{}, &model.Duty{}, &model.Confirmation{})
 
-	// setup routes
 	a.Logger.Println("setting up routes")
 	a.router = mux.NewRouter()
 
-	// shitty hack to counter browser CORS clients, it's hackathon all tricks are allowed
 	a.router.Methods("OPTIONS").HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		rw.WriteHeader(http.StatusOK)
 	})
 
-	// accounts
 	accountController := &controller.Accounts{Database: a.Database}
 	accountController.Register(a.router.PathPrefix("/accounts/").Subrouter())
 

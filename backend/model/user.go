@@ -6,7 +6,8 @@ import (
 
 type User struct {
 	gorm.Model
-	Name     string   `json:"name,omitempty"`
-	Email    string   `json:"email" gorm:"index"`
-	Password string   `json:"password,omitempty"`
+	Name     string    `json:"name,omitempty"`
+	Email    string    `json:"email" gorm:"index"`
+	Password string    `json:"password,omitempty"`
+	Projects []Project `gorm:"many2many:user_projects;"`
 }
