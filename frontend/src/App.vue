@@ -1,5 +1,5 @@
 <template>
-  <v-app light>
+  <v-app light flat>
     <!-- <v-navigation-drawer
       fixed
       :mini-variant="miniVariant"
@@ -76,19 +76,19 @@
       :active.sync="accent_color"
       :color="computedColor"
     >
-      <v-btn dark>
+      <v-btn href="#/" dark>
         <span>Home</span>
         <v-icon>home</v-icon>
       </v-btn>
-      <v-btn dark>
+      <v-btn href="#/score" dark>
         <span>Score</span>
         <v-icon>assessment</v-icon>
       </v-btn>
-      <v-btn dark>
+      <v-btn href="#/profile" dark>
         <span>Profile</span>
         <v-icon>face</v-icon>
       </v-btn>
-      <v-btn dark>
+      <v-btn href="#/settings" dark>
         <span>Settings</span>
         <v-icon>settings</v-icon>
       </v-btn>
@@ -122,8 +122,8 @@ export default {
         case 2:
           return 'brown'
         break
-        case 4:
-          return 'brown lighten-1'
+        case 3:
+          return 'black'
         break
       }
     }
