@@ -1,11 +1,20 @@
 <template>
-  <v-container class="text-xs-center">
-    <v-avatar class="indigo" size="130px">
-      <img src="http://i.pravatar.cc/300">
-    </v-avatar>
+  <v-flex>
+    <v-card flat>
+      <v-card-text class="text-xs-center">
+      <v-avatar size="100px">
+        <img src="/static/img/avatars/1.jpg">
+      </v-avatar>
 
-    <p class="text-xs-center">
-      <h2>Weronika Symbor</h2>
-    </p>
-  </v-container>
+      <p class="text-xs-center">
+        <h2>Weronika</h2>
+      </p>
+      </v-card-text>
+    </v-card>
+    <v-container>
+      <v-card flat>
+        test
+      </v-card>
+    </v-container>
+  </v-flex>
 </template>
