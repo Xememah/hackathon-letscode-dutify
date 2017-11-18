@@ -8,7 +8,7 @@
       app
     >
     </v-navigation-drawer> -->
-    <v-toolbar fixed app :clipped-left="clipped" color="white" flat>
+    <v-toolbar app :clipped-left="clipped" color="white" flat>
       <v-toolbar-side-icon @click.stop="drawer = !drawer" light></v-toolbar-side-icon>
       <!--<v-btn
         icon
@@ -41,15 +41,11 @@
         <v-icon>menu</v-icon>
       </v-btn> -->
     </v-toolbar>
-    <v-content>
-      <v-container fluid>
         <v-slide-y-transition mode="out-in">
-          <v-layout column align-center>
+          <v-layout>
             <router-view></router-view>
           </v-layout>
         </v-slide-y-transition>
-      </v-container>
-    </v-content>
     <!-- <v-navigation-drawer
       temporary
       :right="right"
