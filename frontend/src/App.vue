@@ -1,8 +1,8 @@
 <template>
   <v-app light flat>
-    <v-navigation-drawer fixed :mini-variant="miniVariant" :clipped="clipped" v-model="drawer" app>
+    <v-navigation-drawer fixed v-model="drawer" app>
     </v-navigation-drawer>
-    <v-toolbar app :clipped-left="clipped" color="white" flat>
+    <v-toolbar app color="white" flat>
       <v-toolbar-side-icon @click.stop="drawer = !drawer" light></v-toolbar-side-icon>
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
@@ -37,12 +37,8 @@
 export default {
   data() {
     return {
-      clipped: false,
-      drawer: true,
+      drawer: false,
       fixed: false,
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
       title: "Dutify",
       accent_color: 0
     }

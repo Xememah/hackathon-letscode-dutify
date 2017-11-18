@@ -11,10 +11,8 @@
       </p>
       </v-card-text>
     </v-card>
-    <v-container>
-      <v-card flat>
-        test
-      </v-card>
-    </v-container>
+    <v-card flat>
+      
+    </v-card>
   </v-flex>
 </template>
