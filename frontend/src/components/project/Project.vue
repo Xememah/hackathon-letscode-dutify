@@ -18,10 +18,6 @@
             <span>Profile</span>
             <v-icon>face</v-icon>
         </v-btn>
-        <v-btn to="./settings" dark>
-            <span>Settings</span>
-            <v-icon>settings</v-icon>
-        </v-btn>
         </v-bottom-nav>
     </div>
 </template>

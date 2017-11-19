@@ -8,8 +8,8 @@ let store = {
       window.localStorage.getItem('token')
     },
     getUser: () => {
-      if (this.token()) {
-        return jwtDecode(this.token())
+      if (window.localStorage.getItem('token')) {
+        return jwtDecode(window.localStorage.getItem('token')).User
       }
       return null;
     },
