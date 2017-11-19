@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Homepage from '@/components/Homepage'
 import Project from '@/components/project/Project'
 import Overview from '@/components/project/Overview'
+import Duty from '@/components/project/Duty'
 import Score from '@/components/project/Score'
 import Profile from '@/components/project/Profile'
 import Login from '@/components/Login'
@@ -36,6 +37,11 @@ export default new Router({
           path: 'profile',
           name: 'profile',
           component: Profile
+        },
+        {
+          path: 'duty/:dutyId',
+          name: 'duty',
+          component: Duty
         }
       ]
     },

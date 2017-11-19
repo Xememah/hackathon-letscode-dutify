@@ -3,11 +3,11 @@
     <v-card>
       <v-card-text class="text-xs-center">
       <v-avatar size="100px">
-        <img :src="data.avatar">
+        <img :src="this.getAvatar()">
       </v-avatar>
 
       <p class="text-xs-center">
-        <h2>{{ data.name }}</h2>
+        <h2>{{ data.user.getUser().name }}</h2>
       </p>
       </v-card-text>
     </v-card>
@@ -21,10 +21,12 @@
 export default {
   data () {
     return {
-      data: {
-        name: "Weronika",
-        avatar: "/static/img/avatars/1.jpg"
-      }
+      data: this.$store,
+    }
+  },
+  methods: {
+    getAvatar() {
+      return '/static/img/avatars/'+(Number(this.data.user.getUser().id) % 8 +1)+'.jpg'
     }
   }
 }
