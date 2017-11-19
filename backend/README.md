@@ -1,3 +1,7 @@
 # Dutify
 
-# TODO
+# Build and run
+
+```bash
+docker-compose up --build -d
+```
