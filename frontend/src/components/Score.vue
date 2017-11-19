@@ -4,7 +4,7 @@
     <v-card-text>
       <v-layout row class="text-xs-center">
         <v-flex v-for="item in featured" style="transform: rotate(180deg);">
-          <div class="bar-chart" :style="calcHeight(item.percentage)">{{ item.percentage }}</div>
+          <div class="bar-chart" :style="calcHeight(item.percentage)">{{ item.percentage }} p</div>
         </v-flex>
       </v-layout>
       
@@ -30,6 +30,7 @@
 export default {
   data() {
     return {
+      max: 86,
       featured: [
         {
           percentage: 86,
@@ -51,7 +52,17 @@ export default {
   },
   methods: {
     calcHeight: function(percentage) {
-      return "height: " + percentage + "px"
+      if(this.max > 0 && percentage > 0) {
+        if(this.max == percentage)
+          percentage = 100
+        else {
+          percentage = (percentage / this.max)*100
+        }
+
+        return "height: " + percentage + "px"
+      } else {
+        return "height: 0px"
+      }
     }
   }
 }
@@ -60,7 +71,7 @@ export default {
 <style>
 .bar-chart {
   background-color: #009688;
-  width: 35px;
+  width: 45px;
   margin: 20px auto;
   color: #fff;
   transform: rotate(180deg);
