@@ -163,7 +163,7 @@ func (p *Projects) HandleGetSingle(rw http.ResponseWriter, r *http.Request) {
 		Points int  `json:"points" db:"points"`
 	}
 	results := []Result{}
-	if res := p.Database.Table("confirmations").Select("confirmations.user_id as id, sum(reward) as points").Joins("INNER JOIN duties ON duties.id = confirmations.duty_id AND duties.project_id=?", vars["projectid"]).Group("confirmations.user_id").Find(&results); res.Error != nil {
+	if res := p.Database.Table("confirmations").Select("confirmations.user_id as id, sum(reward) as points").Joins("INNER JOIN duties ON duties.id = confirmations.duty_id AND duties.project_id=?", vars["projectid"]).Group("confirmations.user_id").Order("points", true).Find(&results); res.Error != nil {
 		utils.NewErrorResponse(http.StatusInternalServerError, model.ErrProjectInternal).AppendDebug(res.Error).Write(rw)
 		return
 	}
