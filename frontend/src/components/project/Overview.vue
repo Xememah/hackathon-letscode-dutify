@@ -24,10 +24,10 @@
           <v-icon v-bind:class="[item.iconClass]">{{ item.icon }}</v-icon>
         </v-list-tile-avatar>
         <v-list-tile-content>
-          <v-list-tile-title>{{ item.name }} ({{ item.reward }} pkt)</v-list-tile-title>
+          <v-list-tile-title @click.stop="openDuty(item.id)">{{ item.name }} ({{ item.reward }} pkt)</v-list-tile-title>
         </v-list-tile-content>
         <v-list-tile-action>
-          <v-btn icon ripple @click="confirm(data.project.ID, item.id)">
+          <v-btn icon ripple @click.stop="confirm(data.project.ID, item.id)">
             <v-icon color="green darken-1">add</v-icon>
           </v-btn>
         </v-list-tile-action>
@@ -112,7 +112,10 @@ export default {
           },
           response => {}
         );
-    }
+    },
+    openDuty(id) {
+        this.$router.push('./duty/'+id)
+    },
   }
 };
 </script>
