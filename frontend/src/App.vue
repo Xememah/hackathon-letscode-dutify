@@ -55,7 +55,7 @@
         </v-toolbar>
         <v-form class="pa-3">
           <v-text-field
-            color="white"
+            color="black"
             label="Name"
             v-model="project.name"
             required
@@ -83,7 +83,7 @@
         </v-toolbar>
         <v-form class="pa-3">
           <v-text-field
-            color="white"
+            color="black"
             label="Secret code"
             v-model="project.id"
             required

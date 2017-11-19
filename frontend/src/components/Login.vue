@@ -10,7 +10,7 @@
             required
           ></v-text-field> -->
           <v-text-field
-            color="white"
+            color="black"
             label="E-mail"
             v-model="credentials.email"
             :rules="emailRules"

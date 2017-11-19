@@ -55,7 +55,7 @@
         </v-toolbar>
         <v-form class="pa-3">
           <v-text-field
-            color="white"
+            color="black"
             label="Name"
             v-model="objective.name"
             required
