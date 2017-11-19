@@ -43,7 +43,7 @@ export default {
       emailRules: [
         v => !!v || "E-mail is required",
         v =>
-          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/.test(v) ||
           "E-mail must be valid"
       ]
     };
@@ -55,7 +55,7 @@ export default {
         .post(API_URL + "accounts/login/", this.credentials)
         .then(response => {
           window.localStorage.setItem("token", response.data.token);
-          self.$router.push('/homepage');
+          self.$router.push('/');
         })
         .catch(errors => {
           console.log(errors);

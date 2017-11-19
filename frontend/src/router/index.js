@@ -5,7 +5,6 @@ import Project from '@/components/project/Project'
 import Overview from '@/components/project/Overview'
 import Score from '@/components/project/Score'
 import Profile from '@/components/project/Profile'
-import Challenge from '@/components/Challenge'
 import Login from '@/components/Login'
 
 Vue.use(Router)
@@ -13,12 +12,10 @@ Vue.use(Router)
 export default new Router({
   routes: [{
       path: '/',
-      name: 'homepage',
       component: Homepage
     },
     {
       path: '/project/:projectId',
-      name: 'project',
       component: Project,
       children: [
         {
@@ -27,6 +24,7 @@ export default new Router({
         },
         {
           path: 'home',
+          name: 'home',
           component: Overview
         },
         {
@@ -38,12 +36,7 @@ export default new Router({
           path: 'profile',
           name: 'profile',
           component: Profile
-        },
-        {
-          path: 'challenge',
-          name: 'challenge',
-          component: Challenge
-        },
+        }
       ]
     },
     {

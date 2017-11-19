@@ -34,7 +34,42 @@
       </v-list-tile>
     </v-list>
     </v-card>
-    <v-btn fab fixed right bottom dark color="#607D8B" style="margin-bottom: 60px;">
+
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+      transition="dialog-bottom-transition"
+      :overlay=false scrollable>
+      <v-card>
+          <v-toolbar style="flex: 0 0 auto;" dark class="primary">
+          <v-btn icon @click.native="dialog = false" dark>
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Add a new activity</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark flat @click="addDuty">Save</v-btn>
+            <v-menu bottom right offset-y>
+            </v-menu>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-form class="pa-3">
+          <v-text-field
+            color="white"
+            label="Name"
+            v-model="objective.name"
+            required
+          ></v-text-field>
+          <v-text-field
+            label="Reward"
+            type="number"
+            v-model="objective.reward"
+            required
+          ></v-text-field>
+        </v-form>
+      </v-card>
+    </v-dialog>
+    <v-btn fab absolute right bottom dark color="#607D8B" style="bottom: 70px;" @click.stop="dialog = true">
       <v-icon dark>add</v-icon>
     </v-btn>
   </v-flex>
@@ -46,19 +81,37 @@ import { API_URL } from "@/constants.js";
 export default {
   data() {
     return {
-      data: this.$store
+      objective: {
+        name: "",
+        reward: 1,
+        icon: ["house", "restaurant", "event_seat", "rowing"][Math.abs(Math.floor(Math.random()*4-0.1))]
+      },
+      data: this.$store,
+      dialog: false
     };
   },
   methods: {
     confirm(projectId, id) {
-      this.$http.post(API_URL + "projects/" + projectId + "/duties/"+id+"/confirm").then(
-        response => {
-            this.$store.bus.$emit('refresh-project')
-            this.$router.push('./score')
-        },
-        response => {
-        }
-      );
+      this.$http
+        .post(API_URL + "projects/" + projectId + "/duties/" + id + "/confirm")
+        .then(
+          response => {
+            this.$store.bus.$emit("refresh-project");
+          },
+          response => {}
+        );
+    },
+    addDuty() {
+      this.objective.reward = Number(this.objective.reward)
+      this.$http
+        .post(API_URL + "projects/" + this.data.project.ID + "/duties", this.objective)
+        .then(
+          response => {
+            this.dialog = false;
+            this.$store.bus.$emit("refresh-project");
+          },
+          response => {}
+        );
     }
   }
 };

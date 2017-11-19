@@ -12,8 +12,8 @@ import router from './router'
 import middleware from '@/middleware/middleware'
 import store from './store.js'
 
-Vue.use(Resource)
 Vue.use(store)
+Vue.use(Resource)
 
 
 // Vue.use(Vuetify)

@@ -5,7 +5,7 @@ let store = {
   bus: new Vue(),
   user: {
     token: () => {
-      window.localStorage.getItem('token')
+      return window.localStorage.getItem('token')
     },
     getUser: () => {
       if (window.localStorage.getItem('token')) {
@@ -18,7 +18,8 @@ let store = {
       users: [],
       ranking: [],
       max: 10,
-  }
+  },
+  projects: [],
 }
 
 export default {

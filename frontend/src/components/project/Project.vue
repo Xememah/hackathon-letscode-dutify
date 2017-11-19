@@ -5,7 +5,7 @@
             <router-view></router-view>
         </v-slide-y-transition>
         </v-layout>
-        <v-bottom-nav absolute shift :value="true" :active.sync="accent_color" :color="computedColor">
+        <v-bottom-nav absolute shift :value="true" :color="computedColor">
         <v-btn to="./home" dark>
             <span>Home</span>
             <v-icon>home</v-icon>
@@ -28,13 +28,15 @@ export default {
   name: "Project",
   data() {
     return {
-      accent_color: 0,
       project: {}
     };
   },
   mounted: function() {
-    this.$store.bus.$on("refresh-project", ()  => {
-      this.fetchProject(this.$store.project.ID, ()=>{});
+    this.$store.bus.$on("refresh-project", (id)  => {
+        if(!id) {
+            id = this.$store.project.ID
+        }
+      this.fetchProject(id, ()=>{});
     });
   },
   beforeRouteUpdate(to, from, next) {
@@ -78,17 +80,17 @@ export default {
   },
   computed: {
     computedColor() {
-      switch (this.accent_color) {
-        case 0:
+      switch (this.$route.name) {
+        case 'home':
           return "blue-grey";
           break;
-        case 1:
+        case 'score':
           return "teal";
           break;
-        case 2:
+        case 'profile':
           return "brown";
           break;
-        case 3:
+        deafult:
           return "black";
           break;
       }
