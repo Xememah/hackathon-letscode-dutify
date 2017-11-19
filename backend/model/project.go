@@ -18,6 +18,7 @@ type Project struct {
 	gorm.Model
 	Name   string `json:"name"`
 	Hidden bool   `json:"hidden"`
+	Icon   string `json:"icon,omitempty"`
 	Duties []Duty `gorm:"ForeignKey:ProjectID" json:"duties"`
 	Users  []User `gorm:"many2many:user_projects;" json:"users"`
 }
