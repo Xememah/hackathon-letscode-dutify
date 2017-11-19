@@ -156,6 +156,7 @@ export default {
       );
     },
     goto: function(id) {
+      this.drawer = false;
       this.$router.push('/project/'+id);
       this.$store.bus.$emit("refresh-project", id);
     }
