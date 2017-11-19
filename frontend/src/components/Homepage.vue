@@ -41,6 +41,7 @@
         </v-list-tile-action>
       </v-list-tile>
     </v-list>
+    
     </v-card>
     <v-btn fab fixed right bottom dark color="#607D8B" style="margin-bottom: 60px;">
       <v-icon dark>add</v-icon>
