@@ -20,6 +20,7 @@ type Duty struct {
 	ID            uint           `json:"id"`
 	CreatedAt     time.Time      `json:",omitempty"`
 	ProjectID     uint           `json:"project_id,omitempty"`
+	Icon          string         `json:"icon,omitempty"`
 	Name          string         `json:"name,omitempty"`
 	Reward        int            `json:"reward,omitempty"`
 	Confirmations []Confirmation `json:"confirmations"`

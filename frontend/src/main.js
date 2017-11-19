@@ -2,14 +2,18 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import {API_URL} from './constants.js'
+import {
+  API_URL
+} from './constants.js'
 import Resource from 'vue-resource'
-Vue.use(Resource)
-
 import 'vuetify/dist/vuetify.css'
 import App from './App'
 import router from './router'
 import middleware from '@/middleware/middleware'
+import store from './store.js'
+
+Vue.use(Resource)
+Vue.use(store)
 
 
 // Vue.use(Vuetify)
@@ -25,32 +29,33 @@ Vue.config.productionTip = false
 
 middleware(router)
 
+Vue.http.interceptors.push((request, next) => {
+  let token = window.localStorage.getItem('token')
+
+  if (token) {
+    request.headers.set('Authorization', `Bearer ${token}`)
+  }
+  next((response) => {
+    if (response.status === 401) {
+      return Vue.http.post(API_URL + 'accounts/token/').then((result) => {
+          return Vue.http(request).then((response) => {
+            return response
+          })
+        })
+        .catch(() => {
+          return router.push('login')
+        })
+    }
+  })
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
-})
-
-Vue.http.interceptors.push((request, next) => {
-  let token = window.localStorage.getItem('token')
-
-  if (token) {
-      request.headers = request.headers || {}
-      request.headers.Authorization = `Bearer ${token}`
+  components: {
+    App
   }
-  next((response) => {
-      if (response.status === 401) {
-          return Vue.http.get(API_URL+'token').then((result) => {
-              window.localStorage.setItem('token', result.data.token)
-              return Vue.http(request).then((response) => {
-                  return response
-              })
-          })
-          .catch(() => {
-              return router.go({name: 'login'})
-          })
-      }
-  })
 })
+
