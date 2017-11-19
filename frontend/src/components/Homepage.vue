@@ -42,9 +42,29 @@
         </v-list-tile-action>
       </v-list-tile>
     </v-list>
-    
     </v-card>
-    <v-btn fab fixed right bottom dark color="#607D8B" style="margin-bottom: 60px;">
+    <v-dialog
+      v-model="dialog"
+      fullscreen
+      transition="dialog-bottom-transition"
+      :overlay=false scrollable>
+      <v-card>
+          <v-toolbar style="flex: 0 0 auto;" dark class="primary">
+          <v-btn icon @click.native="dialog = false" dark>
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Add a new activity</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn dark flat @click.native="dialog = false">Save</v-btn>
+            <v-menu bottom right offset-y>
+            </v-menu>
+          </v-toolbar-items>
+        </v-toolbar>
+        <!-- tutaj -->
+      </v-card>
+    </v-dialog>
+    <v-btn fab fixed right bottom dark color="#607D8B" style="margin-bottom: 60px;" @click.stop="dialog = true">
       <v-icon dark>add</v-icon>
     </v-btn>
   </v-flex>
@@ -53,6 +73,7 @@
 export default {
   data() {
     return {
+      dialog: false,
       progress: [
         {
           points: 72,
