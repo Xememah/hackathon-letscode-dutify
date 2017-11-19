@@ -2,6 +2,7 @@ import Vue from 'vue'
 const jwtDecode = require('jwt-decode')
 
 let store = {
+  bus: new Vue(),
   user: {
     token: () => {
       window.localStorage.getItem('token')
@@ -16,6 +17,7 @@ let store = {
   project: {
       users: [],
       ranking: [],
+      max: 10,
   }
 }
 

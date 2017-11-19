@@ -36,32 +36,42 @@ export default {
       project: {}
     };
   },
+  mounted: function() {
+    this.$store.bus.$on("refresh-project", ()  => {
+      this.fetchProject(this.$store.project.ID, ()=>{});
+    });
+  },
   beforeRouteUpdate(to, from, next) {
     if (to.params.projectId != to.params.projectId) {
-        this.fetchProject(to.params.projectId, function() {
-            next();
-        })
-    } else {
+      this.fetchProject(to.params.projectId, function() {
         next();
+      });
+    } else {
+      next();
     }
   },
   created() {
     let params = this.$route.params;
-    this.fetchProject(params.projectId, () =>{})
+    this.fetchProject(params.projectId, () => {});
   },
   methods: {
     fetchProject(id, callback) {
       this.$http.get(API_URL + "projects/" + id + "/").then(
         response => {
-          for(let entry of response.body.ranking) {
-            for(let user of response.body.users) {
-                if(user.id == entry.user) {
-                    entry.name = user.name;
-                }
+          response.body.max = 1
+          for (let entry of response.body.ranking) {
+            if(entry.points > response.body.max) {
+                response.body.max = entry.points
+            }
+            for (let user of response.body.users) {
+              if (user.id == entry.user) {
+                entry.name = user.name;
+                entry.avatar = 'static/img/avatars/'+(user.id%8+1)+'.jpg';
+              }
             }
           }
           this.$store.project = response.body;
-          this.project = this.$store.project
+          this.project = this.$store.project;
           callback();
         },
         response => {
