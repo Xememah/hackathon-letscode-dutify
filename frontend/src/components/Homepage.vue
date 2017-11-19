@@ -1,3 +1,4 @@
+
 <template>
   <v-flex>
     <v-card>
@@ -48,7 +49,6 @@
     </v-btn>
   </v-flex>
 </template>
-
 <script>
 export default {
   data() {

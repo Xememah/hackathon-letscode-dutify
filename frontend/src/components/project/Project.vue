@@ -47,20 +47,21 @@ export default {
   },
   created() {
     let params = this.$route.params;
-    this.$http.get(API_URL + "projects/" + params.projectId + "/").then(
-      response => {
-        this.project = response;
-      },
-      response => {
-        console.log("Should not happen");
-      }
-    );
+    this.fetchProject(params.projectId, () =>{})
   },
   methods: {
     fetchProject(id, callback) {
-      this.$http.get(API_URL + "projects/" + params.projectId + "/").then(
+      this.$http.get(API_URL + "projects/" + id + "/").then(
         response => {
-          this.project = response;
+          for(let entry of response.body.ranking) {
+            for(let user of response.body.users) {
+                if(user.id == entry.user) {
+                    entry.name = user.name;
+                }
+            }
+          }
+          this.$store.project = response.body;
+          this.project = this.$store.project
           callback();
         },
         response => {
